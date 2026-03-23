@@ -1,25 +1,51 @@
-const mongoose = require("mongoose");
-
-const userschema = new mongoose.Schema({
-    username: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-    },
-    password: {
-        type: String,
-        required: true,
-    },
-    role: {
-        type: String,
-        enum: ["user", "admin"],
-        default: "user",
-    },
-    
-}, {timestamps: true});
+import mongoose, {Schema, schema} from "mongoose";
 
 
-module.exports = mongoose.model("User", userschema);
+const userschema = new Schema(
+    {
+        username: {
+            type: String,
+            required: true,
+            unique: true,
+            lowercase: true, 
+            trim: true, 
+            index: true,
+        },
+        email: {
+            type: String,
+            required: true,
+            unique: true,
+            lowercase: true, 
+            trim: true,
+        },
+        Fullname: {
+            type: String,
+            required: true,
+            trim: true,
+            index: true,
+        },
+        avatar: {
+            type: String,  //cloudinary URL
+            required: true
+        },
+        coverImage: {
+            type: String,
+        },
+        watchHistory: [
+            {
+                types: Schema.Types.ObjectId,
+                ref: "video"
+            }
+        ], 
+        password: {
+            type: String,
+            required: [true, 'Password is required']
+        },
+        refreshtoken: {
+            type: String
+        }
+},{
+    timestamps: true
+})
+  
+export const user = mongoose.model("User", userschema);
