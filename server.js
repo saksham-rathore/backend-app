@@ -1,6 +1,10 @@
-require("dotenv").config();
-const express = require("express");
-const connectDB = require("./src/config/db");
+import dotenv from "dotenv";
+dotenv.config();
+import express from "express";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import connectDB from "./src/config/db.js";
+
 const app = express();
 
 app.use(cookieParser());
@@ -10,8 +14,14 @@ app.use(cors({
 }));
 
 app.use(express.json({limit: "20kb"}));   // json format mai data lana ke liye 
-app.use(express.urlencoded());    //URL se data lane ke liye
+app.use(express.urlencoded({extended: true}));    //URL se data lane ke liye
 app.use(express.static("public"));   //PDF ya koi folder store krne ke liye
+
+//routes import
+import userRouter from "./src/routes/user.routes.js"
+
+//Routes declaration
+app.use("/api/v1/users", userRouter)
 
 
 // database connection
