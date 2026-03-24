@@ -10,7 +10,7 @@ const app = express();
 app.use(cookieParser());
 app.use(cors({
     origin: process.env.CORS_ORIGIN,
-    credential: true
+    credentials: true
 }));
 
 app.use(express.json({limit: "20kb"}));   // json format mai data lana ke liye 
