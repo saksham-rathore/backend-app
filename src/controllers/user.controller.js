@@ -1,20 +1,21 @@
 import { asynchandler } from "../utils/asynchandler.js";
 import { ApiError } from "../utils/apierrors.js";
-import { User } from "../models/user.model.js";
+import { user } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/Api.response.js";
 
 const registerUser = asynchandler(async (req, res) => {
-  const { fullname, email, username, password } = req.body;
-  console.log("email: ", email);
+  const { Fullname, email, username, password } = req.body;
 
   if (
-    [fullname, email, username, password].some((field) => field?.trim() === "")
+    [Fullname, email, username, password].some(
+      (field) => typeof field !== "string" || field.trim() === "",
+    )
   ) {
     throw new ApiError(400, "All fields are required");
   }
 
-  const existedUser = User.findOne({
+  const existedUser = await user.findOne({
     $or: [{ username }, { email }],
   });
 
@@ -36,26 +37,26 @@ const registerUser = asynchandler(async (req, res) => {
     throw new ApiError(409, "Avatar is required");
   }
 
-  const user = await User.create({
-    fullname,
+  const User = await user.create({
+    Fullname,
     avatar: avatar.url,
     email,
     password,
     coverImage: coverImage?.url || "",
-    username: username.toLowerCase()
-  })
+    username: username.toLowerCase(),
+  });
 
-  const createdUser = await User.findById(user._id).select(
-    "-password -refreshtoken"
-  )
+  const createdUser = await user
+    .findById(User._id)
+    .select("-password -refreshtoken");
 
   if (!createdUser) {
-    throw new ApiError(500, "Something went wrong while registering the user")
+    throw new ApiError(500, "Something went wrong while registering the user");
   }
 
-  return res.status(201).json(
-    new ApiResponse(200, createdUser, "User registered Successfully")
-  )
+  return res
+    .status(201)
+    .json(new ApiResponse(200, createdUser, "User registered Successfully"));
 });
 
 export { registerUser };
