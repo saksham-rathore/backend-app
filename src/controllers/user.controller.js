@@ -20,7 +20,8 @@ const registerUser = asynchandler(async (req, res) => {
   });
 
   if (existedUser) {
-    throw new ApiError(409, "User already exists");
+    const duplicatedField = existedUser.username === username.toLowerCase() ? "username" : "email";
+    throw new ApiError(409, `User with this ${duplicatedField} already exists`);
   }
 
   const avatarLocalPath = req.files?.avatar[0]?.path;
