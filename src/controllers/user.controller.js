@@ -20,7 +20,7 @@ const generateAccessTokenandRefreshToken = async(userId) => {
   } catch (error) {
     throw new ApiError(500, "something went wrong while generating refresh and Access token")
   }
-}
+};
 
 const registerUser = asynchandler(async (req, res) => {
   const { Fullname, email, username, password } = req.body;
@@ -120,7 +120,7 @@ const loginUser = asynchandler(async (req, res) => {
     },
     "User logged In Successfully"
   ))
-})
+});
 
 const logoutUser = asynchandler(async(req, res) => {
   await User.findByIdAndUpdate(
@@ -144,6 +144,6 @@ const logoutUser = asynchandler(async(req, res) => {
   .clearCookie("accessToken", options)
   .clearCookie("refreshToken", options)
   .json(new ApiResponse(200, {}, "User logged out"))
-})
+});
 
 export { registerUser, loginUser, logoutUser };
