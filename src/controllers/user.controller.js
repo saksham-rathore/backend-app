@@ -82,10 +82,13 @@ const registerUser = asynchandler(async (req, res) => {
 const loginUser = asynchandler(async (req, res) => {
   const {email, username, password} = req.body
 
-  if (!email || !username) {
+
+  //loginUser controller mein ek validation check kar rahi hain.
+  if (!email && !username) {
     throw new ApiError(400, "username or password required")
   }
 
+  //Ye lines Database mein User ko dhundne (find karne) ka kaam kar rahi hain.
   const userInstance = await User.findOne({
     $or: [{username}, {email}]
   })
@@ -100,6 +103,8 @@ const loginUser = asynchandler(async (req, res) => {
     throw new ApiError(401, "Invalid user credentials")
   }
 
+
+  //Ye lines user ko successfully Login karwane, Access aur Refresh Tokens generate/banane aur unko browser ke Cookies mein safely send karne ka saara kaam handle kar rahi hain.
   const {Refreshtoken,accessToken} = await generateAccessTokenandRefreshToken(userInstance._id)
 
   const loggedInUser = await User.findById(userInstance._id).select("-password -refreshtoken")
