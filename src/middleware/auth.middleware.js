@@ -1,8 +1,7 @@
-import { asynchandler } from "../utils/asynchandler";
-import {ApiError} from "../utils/apierrors"
-import { Jwt } from "jsonwebtoken";
-import { jwt } from "zod";
-import { User } from "../models/user.model"
+import { asynchandler } from "../utils/asynchandler.js";
+import { ApiError } from "../utils/apierrors.js";
+import jwt from "jsonwebtoken";
+import { User } from "../models/user.model.js";
 export const verifyJWT = asynchandler(async(req, res, next) => {  //next keyward is Imp because middle says go to next Middleware I am done
     try {
         const token = req.cookies?.accessToken  || req.header("authorization")?.replace("Bearer ", "")
