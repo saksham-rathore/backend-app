@@ -24,6 +24,7 @@ const generateAccessTokenandRefreshToken = async (userId) => {
   }
 };
 
+
 const registerUser = asynchandler(async (req, res) => {
   const { Fullname, email, username, password } = req.body;
 
@@ -81,6 +82,7 @@ const registerUser = asynchandler(async (req, res) => {
     .json(new ApiResponse(200, createdUser, "User registered Successfully"));
 });
 
+
 const loginUser = asynchandler(async (req, res) => {
   const { email, username, password } = req.body;
 
@@ -134,6 +136,7 @@ const loginUser = asynchandler(async (req, res) => {
     );
 });
 
+
 const logoutUser = asynchandler(async (req, res) => {
   await User.findByIdAndUpdate(
     req.user._id,
@@ -157,6 +160,7 @@ const logoutUser = asynchandler(async (req, res) => {
     .clearCookie("refreshToken", options)
     .json(new ApiResponse(200, {}, "User logged out"));
 });
+
 
 //creating refresh token end-point
 const refreshAccessToken = asynchandler(async (req, res) => {
@@ -207,6 +211,7 @@ const refreshAccessToken = asynchandler(async (req, res) => {
   }
 });
 
+
 const changeCurrentPassword = asynchandler(async(req, res) => {
   const {oldPassword, newPassword} = req.body
 
@@ -223,9 +228,11 @@ const changeCurrentPassword = asynchandler(async(req, res) => {
   return  res.status(200).json(new ApiResponse(200, {}, "Password change successfully"))
 })
 
+
 const getCurrentUser = asynchandler(async(req, res) => {
   return res.status(200).json(200, req.user, "current user fetched successfully")
 })
+
 
 const updateAccountDetails = asynchandler(async(req, res) => {
   const {fullname, email} = req.body
