@@ -2,8 +2,7 @@ import { useState } from 'react'
 import React from 'react'
 
 const App = () => {
-  const [amount, setAmount] = useState(0);
-  const [convert, setConvert] = useState(0);
+
   return (
 <div class="min-h-screen flex items-center justify-center bg-gray-100">
   <div class="w-[350px] bg-white rounded-2xl shadow-lg p-6">
